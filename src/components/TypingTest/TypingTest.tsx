@@ -2,11 +2,12 @@ import type { ChangeEvent } from 'react';
 import { useTextFetch } from '../../hooks/useTextFetch';
 import { useTypingTest } from '../../hooks/useTypingTest';
 import { useConfiguration } from '../../hooks/useConfiguration';
-import { calculateTypingStats } from '../../utils/typingCalculations.ts';
+import { calculateProgress, calculateTypingStats } from '../../utils/typingCalculations.ts';
 import { ConfigurationPanel } from '../ConfigurationPanel/ConfigurationPanel';
 import { TextDisplay } from '../TextDisplay/TestDisplay.tsx';
 import { TypingInput } from '../TypingInput/TypingInput';
 import { StatsDisplay } from '../StatsDisplay/StatsDisplay';
+import { ProgressBar } from '../ProgressBar/ProgressBar';
 import { StyledWrapper, StyledHeader } from './TypingTest.styles';
 
 export const TypingTest = () => {
@@ -26,6 +27,12 @@ export const TypingTest = () => {
     typingTestState.endTime,
     typingTestState.userInput,
     typingTestState.errors,
+  );
+
+  // progress calculation
+  const progress = calculateProgress(
+    typingTestState.currentIndex,
+    targetText?.length,
   );
 
   const handleInputChangeWrapper = (
@@ -70,6 +77,13 @@ export const TypingTest = () => {
           userInput={typingTestState.userInput}
           currentIndex={typingTestState.currentIndex}
           errors={typingTestState.errors}
+        />
+      )}
+
+      {targetText && (
+        <ProgressBar
+          progress={progress}
+          currentIndex={typingTestState.currentIndex}
         />
       )}
 

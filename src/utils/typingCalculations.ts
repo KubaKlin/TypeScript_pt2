@@ -33,6 +33,13 @@ export const calculateTypingStats = (
   };
 };
 
+export const calculateProgress = (
+  currentIndex: number,
+  totalCharacters: number,
+): number => {
+  return Math.min((currentIndex / totalCharacters) * 100, 100);
+};
+
 export const calculateErrors = (
   userInput: string,
   targetText: string,
