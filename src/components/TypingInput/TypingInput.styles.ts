@@ -11,7 +11,6 @@ export const StyledButtonWrapper = styled('div')(() => ({
   marginTop: '25px',
 }));
 
-
 export const StyledButton = styled('button')(() => ({
   padding: '12px 24px',
   fontSize: '18px',

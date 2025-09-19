@@ -1,6 +1,6 @@
-import { 
+import {
   StyledProgressContainer,
-  StyledProgressBar, 
+  StyledProgressBar,
 } from './ProgressBar.styles';
 
 interface ProgressBarProps {
@@ -8,8 +8,7 @@ interface ProgressBarProps {
   currentIndex: number;
 }
 
-export const ProgressBar = ({progress, currentIndex}: ProgressBarProps) => {
-
+export const ProgressBar = ({ progress, currentIndex }: ProgressBarProps) => {
   if (currentIndex === 0) {
     return null;
   }

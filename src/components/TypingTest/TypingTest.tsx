@@ -2,24 +2,34 @@ import type { ChangeEvent } from 'react';
 import { useTextFetch } from '../../hooks/useTextFetch';
 import { useTypingTest } from '../../hooks/useTypingTest';
 import { useConfiguration } from '../../hooks/useConfiguration';
-import { calculateProgress, calculateTypingStats } from '../../utils/typingCalculations.ts';
+import {
+  calculateProgress,
+  calculateTypingStats,
+} from '../../utils/typingCalculations.ts';
 import { ConfigurationPanel } from '../ConfigurationPanel/ConfigurationPanel';
 import { TextDisplay } from '../TextDisplay/TestDisplay.tsx';
 import { TypingInput } from '../TypingInput/TypingInput';
 import { StatsDisplay } from '../StatsDisplay/StatsDisplay';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
+import { Timer } from '../Timer/Timer';
 import { StyledWrapper, StyledHeader } from './TypingTest.styles';
 
 export const TypingTest = () => {
   // configuration
-  const { textType, textAmount, handleTextTypeChange, handleTextAmountChange } =
-    useConfiguration();
+  const {
+    textType,
+    textAmount,
+    timeLimit,
+    handleTextTypeChange,
+    handleTextAmountChange,
+    handleTimeLimitChange,
+  } = useConfiguration();
 
   // fetching
   const { targetText, refetchText } = useTextFetch(textType, textAmount);
 
   // test state
-  const typingTestState = useTypingTest(targetText);
+  const typingTestState = useTypingTest(targetText, timeLimit);
 
   // test calculation
   const stats = calculateTypingStats(
@@ -55,19 +65,23 @@ export const TypingTest = () => {
       handleTextAmountChange(amount);
       typingTestState.resetTest();
     },
+    timeLimit: (time: number) => {
+      handleTimeLimitChange(time);
+      typingTestState.resetTest();
+    },
   };
 
   return (
     <StyledWrapper>
-      <StyledHeader>
-        Type'o Speed Test
-      </StyledHeader>
+      <StyledHeader>Type'o Speed Test</StyledHeader>
 
       <ConfigurationPanel
         textType={textType}
         textAmount={textAmount}
+        timeLimit={timeLimit}
         onTextTypeChange={handleConfigurationChange.textType}
         onTextAmountChange={handleConfigurationChange.textAmount}
+        onTimeLimitChange={handleConfigurationChange.timeLimit}
         handleNewText={handleNewText}
       />
 
@@ -79,6 +93,13 @@ export const TypingTest = () => {
           errors={typingTestState.errors}
         />
       )}
+
+      <Timer
+        timeRemaining={typingTestState.timeRemaining}
+        timeLimit={timeLimit}
+        isTestStarted={typingTestState.isTestStarted}
+        isTimeUp={typingTestState.isTimeUp}
+      />
 
       {targetText && (
         <ProgressBar
@@ -101,7 +122,8 @@ export const TypingTest = () => {
         stats={stats}
         isTestStarted={typingTestState.isTestStarted}
         isTestCompleted={typingTestState.isTestCompleted}
+        isTimeUp={typingTestState.isTimeUp}
       />
     </StyledWrapper>
-  )
-}
+  );
+};

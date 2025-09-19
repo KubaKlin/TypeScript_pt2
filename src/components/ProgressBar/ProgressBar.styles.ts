@@ -10,10 +10,12 @@ export const StyledProgressContainer = styled('div')(() => ({
   margin: '20px auto 0',
 }));
 
-export const StyledProgressBar = styled('div')<{ progress: number }>(({ progress }) => ({
-  height: '100%',
-  width: `${progress}%`,
-  backgroundColor: '#1976d2',
-  borderRadius: '4px',
-  transition: 'width 0.2s ease-in-out',
-}));
+export const StyledProgressBar = styled('div')<{ progress: number }>(
+  ({ progress }) => ({
+    height: '100%',
+    width: `${progress}%`,
+    backgroundColor: '#1976d2',
+    borderRadius: '4px',
+    transition: 'width 0.2s ease-in-out',
+  }),
+);

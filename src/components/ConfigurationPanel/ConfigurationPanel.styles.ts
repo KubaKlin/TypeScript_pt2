@@ -7,7 +7,7 @@ export const StyledPanelWrapper = styled('div')(() => ({
 }));
 
 export const StyledPanelHeader = styled('h3')(() => ({
-  margin: '0 0 15px 0'
+  margin: '0 0 15px 0',
 }));
 
 export const StyledSelect = styled('select')(() => ({

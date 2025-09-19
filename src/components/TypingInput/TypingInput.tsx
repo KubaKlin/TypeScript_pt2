@@ -1,5 +1,10 @@
 import type { ChangeEvent } from 'react';
-import { StyledTextWrapper, StyledButtonWrapper, StyledButton, StyledTextArea } from './TypingInput.styles';
+import {
+  StyledTextWrapper,
+  StyledButtonWrapper,
+  StyledButton,
+  StyledTextArea,
+} from './TypingInput.styles';
 
 interface TypingInputProps {
   isTestStarted: boolean;
@@ -16,16 +21,14 @@ export const TypingInput = ({
   onInputChange,
   onStartTest,
 }: TypingInputProps) => {
-
   if (isTestCompleted) return null;
 
-  if (!isTestStarted) return (
-    <StyledButtonWrapper>
-      <StyledButton onClick={onStartTest}>
-        Start Typing Test
-      </StyledButton>
-    </StyledButtonWrapper>
-  )
+  if (!isTestStarted)
+    return (
+      <StyledButtonWrapper>
+        <StyledButton onClick={onStartTest}>Start Typing Test</StyledButton>
+      </StyledButtonWrapper>
+    );
 
   return (
     <StyledTextWrapper>

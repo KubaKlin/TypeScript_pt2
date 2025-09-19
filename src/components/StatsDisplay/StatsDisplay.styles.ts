@@ -7,9 +7,8 @@ export const StyledStatsWrapper = styled('div')(() => ({
 
 export const StyledStatsHeader = styled('div')(() => ({
   margin: '0 0 15px 0',
-  color: '#2e7d32'
+  color: '#2e7d32',
 }));
-
 
 export const StyledStats = styled('div')(() => ({
   display: 'flex',
