@@ -11,17 +11,17 @@ export const StyledStatsHeader = styled('div')(() => ({
 }));
 
 
-export const StyledStats = styled('button')(() => ({
+export const StyledStats = styled('div')(() => ({
   display: 'flex',
   gap: '15px',
   justifyContent: 'space-around',
 }));
 
-export const StyledStatWrapper = styled('textarea')(() => ({
+export const StyledStatWrapper = styled('div')(() => ({
   textAlign: 'center',
 }));
 
-export const StyledStatValue = styled('textarea')(() => ({
+export const StyledStatValue = styled('div')(() => ({
   fontSize: '24px',
   fontWeight: 'bold',
   color: '#1976d2',
