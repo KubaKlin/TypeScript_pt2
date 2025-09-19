@@ -1,20 +1,31 @@
 import { TextType } from '../../types';
 import type { ChangeEvent } from 'react';
-import { StyledPanelHeader, StyledPanelWrapper, StyledOptionsWrapper, StyledSelect, StyledInput, StyledButton } from './ConfigurationPanel.styles';
+import {
+  StyledPanelHeader,
+  StyledPanelWrapper,
+  StyledOptionsWrapper,
+  StyledSelect,
+  StyledInput,
+  StyledButton,
+} from './ConfigurationPanel.styles';
 
 interface ConfigurationPanelProps {
   textType: TextType;
   textAmount: number;
+  timeLimit: number;
   onTextTypeChange: (type: TextType) => void;
   onTextAmountChange: (amount: number) => void;
+  onTimeLimitChange: (time: number) => void;
   handleNewText: () => void;
 }
 
 export const ConfigurationPanel = ({
   textType,
   textAmount,
+  timeLimit,
   onTextTypeChange,
   onTextAmountChange,
+  onTimeLimitChange,
   handleNewText,
 }: ConfigurationPanelProps) => {
   const handleTextAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -25,18 +36,17 @@ export const ConfigurationPanel = ({
     onTextTypeChange(event.target.value as TextType);
   };
 
+  const handleTimeLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onTimeLimitChange(Number(event.target.value));
+  };
+
   return (
     <StyledPanelWrapper>
-      <StyledPanelHeader>
-        Configure Your Test
-      </StyledPanelHeader>
+      <StyledPanelHeader>Configure Your Test</StyledPanelHeader>
       <StyledOptionsWrapper>
         <div>
           <label>Text Type: </label>
-          <StyledSelect
-            value={textType}
-            onChange={handleTextTypeChange}
-          >
+          <StyledSelect value={textType} onChange={handleTextTypeChange}>
             <option value="paragraphs">Paragraphs</option>
             <option value="sentences">Sentences</option>
           </StyledSelect>
@@ -53,9 +63,17 @@ export const ConfigurationPanel = ({
           />
         </div>
 
-        <StyledButton onClick={handleNewText}>
-          Get New Text
-        </StyledButton>
+        <div>
+          <label>Time Limit: </label>
+          <StyledSelect value={timeLimit} onChange={handleTimeLimitChange}>
+            <option value={30}>30 seconds</option>
+            <option value={60}>1 minute</option>
+            <option value={120}>2 minutes</option>
+            <option value={0}>No limit</option>
+          </StyledSelect>
+        </div>
+
+        <StyledButton onClick={handleNewText}>Get New Text</StyledButton>
       </StyledOptionsWrapper>
     </StyledPanelWrapper>
   );

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { calculateErrors } from '../utils/typingCalculations';
 
-export const useTypingTest = (targetText: string) => {
+export const useTypingTest = (targetText: string, timeLimit: number = 0) => {
   // Test state
   const [isTestStarted, setIsTestStarted] = useState<boolean>(false);
   const [isTestCompleted, setIsTestCompleted] = useState<boolean>(false);
+  const [isTimeUp, setIsTimeUp] = useState<boolean>(false);
 
   // Typing state
   const [userInput, setUserInput] = useState<string>('');
@@ -12,6 +13,19 @@ export const useTypingTest = (targetText: string) => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [endTime, setEndTime] = useState<number | null>(null);
   const [errors, setErrors] = useState<Set<number>>(new Set());
+  const [timeRemaining, setTimeRemaining] = useState<number>(timeLimit);
+
+  // Timer
+  const [timerId, setTimerId] = useState<number | null>(null);
+
+  const completeTest = () => {
+    setIsTestCompleted(true);
+    setEndTime(Date.now());
+    if (timerId) {
+      clearInterval(timerId);
+      setTimerId(null);
+    }
+  };
 
   const startTest = () => {
     setIsTestStarted(true);
@@ -20,17 +34,40 @@ export const useTypingTest = (targetText: string) => {
     setCurrentIndex(0);
     setErrors(new Set());
     setIsTestCompleted(false);
+    setIsTimeUp(false);
     setEndTime(null);
+    setTimeRemaining(timeLimit);
+
+    // Start timer if time limit is set
+    if (timeLimit > 0) {
+      const id = setInterval(() => {
+        setTimeRemaining((previous) => {
+          if (previous <= 1) {
+            setIsTimeUp(true);
+            completeTest();
+            return 0;
+          }
+          return previous - 1;
+        });
+      }, 1000);
+      setTimerId(id);
+    }
   };
 
   const resetTest = () => {
+    if (timerId) {
+      clearInterval(timerId);
+      setTimerId(null);
+    }
     setIsTestStarted(false);
     setIsTestCompleted(false);
+    setIsTimeUp(false);
     setUserInput('');
     setCurrentIndex(0);
     setStartTime(null);
     setEndTime(null);
     setErrors(new Set());
+    setTimeRemaining(timeLimit);
   };
 
   const handleInputChange = (value: string) => {
@@ -42,19 +79,20 @@ export const useTypingTest = (targetText: string) => {
 
     // Check if test is completed
     if (value.length >= targetText.length) {
-      setIsTestCompleted(true);
-      setEndTime(Date.now());
+      completeTest();
     }
   };
 
   return {
     isTestStarted,
     isTestCompleted,
+    isTimeUp,
     userInput,
     currentIndex,
     startTime,
     endTime,
     errors,
+    timeRemaining,
 
     startTest,
     resetTest,
