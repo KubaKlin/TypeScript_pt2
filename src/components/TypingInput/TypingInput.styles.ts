@@ -1,9 +1,12 @@
 import { styled } from '@mui/material/styles';
 
-export const StyledTextWrapper = styled('div')(() => ({
+export const StyledTextWrapper = styled('div')(({theme}) => ({
   padding: '20px',
   borderRadius: '10px',
   marginBottom: '20px',
+  [theme.breakpoints.down('sm')]: {
+    padding: 0,
+  },
 }));
 
 export const StyledButtonWrapper = styled('div')(() => ({
@@ -21,7 +24,7 @@ export const StyledButton = styled('button')(() => ({
   cursor: 'pointer',
 }));
 
-export const StyledTextArea = styled('textarea')(() => ({
+export const StyledTextArea = styled('textarea')(({theme}) => ({
   width: '100%',
   height: '120px',
   padding: '15px',
@@ -31,4 +34,7 @@ export const StyledTextArea = styled('textarea')(() => ({
   borderRadius: '8px',
   resize: 'none',
   outline: 'none',
+  [theme.breakpoints.down('sm')]: {
+    width: 'auto',
+  },
 }));

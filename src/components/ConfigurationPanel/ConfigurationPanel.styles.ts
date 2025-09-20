@@ -1,9 +1,12 @@
 import { styled } from '@mui/material/styles';
 
-export const StyledPanelWrapper = styled('div')(() => ({
+export const StyledPanelWrapper = styled('div')(({ theme }) => ({
   padding: '20px',
   borderRadius: '10px',
   marginBottom: '20px',
+  [theme.breakpoints.down('sm')]: {
+    padding: 0,
+  },
 }));
 
 export const StyledPanelHeader = styled('h3')(() => ({
