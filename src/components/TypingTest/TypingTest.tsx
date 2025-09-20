@@ -13,6 +13,7 @@ import { StatsDisplay } from '../StatsDisplay/StatsDisplay';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import { Timer } from '../Timer/Timer';
 import { StyledWrapper, StyledHeader } from './TypingTest.styles';
+import { useHighScore } from '../../hooks/useHighScore';
 
 export const TypingTest = () => {
   // configuration
@@ -45,6 +46,12 @@ export const TypingTest = () => {
     targetText?.length,
   );
 
+  // High score management
+  const { highScore } = useHighScore({
+    isTestCompleted: typingTestState.isTestCompleted,
+    wordsPerMinute: stats.wordsPerMinute,
+  });
+
   const handleInputChangeWrapper = (
     event: ChangeEvent<HTMLTextAreaElement>,
   ) => {
@@ -74,6 +81,7 @@ export const TypingTest = () => {
   return (
     <StyledWrapper>
       <StyledHeader>Type'o Speed Test</StyledHeader>
+      {highScore && <StyledHeader>Highest score: {highScore} WPM</StyledHeader>}
 
       <ConfigurationPanel
         textType={textType}
