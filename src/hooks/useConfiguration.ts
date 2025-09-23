@@ -1,21 +1,28 @@
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { TextType } from '../types';
+import { RootState } from '../store/store';
+import {
+  setTextType,
+  setTextAmount,
+  setTimeLimitInSeconds,
+} from '../store/configurationSlice';
 
 export const useConfiguration = () => {
-  const [textType, setTextType] = useState<TextType>('sentences');
-  const [textAmount, setTextAmount] = useState<number>(2);
-  const [timeLimitInSeconds, setTimeLimit] = useState<number>(60); // in seconds
+  const dispatch = useDispatch();
+  const { textType, textAmount, timeLimitInSeconds } = useSelector(
+    (state: RootState) => state.configuration,
+  );
 
   const handleTextTypeChange = (type: TextType) => {
-    setTextType(type);
+    dispatch(setTextType(type));
   };
 
   const handleTextAmountChange = (amount: number) => {
-    setTextAmount(amount);
+    dispatch(setTextAmount(amount));
   };
 
   const handleTimeLimitChange = (time: number) => {
-    setTimeLimit(time);
+    dispatch(setTimeLimitInSeconds(time));
   };
 
   return {

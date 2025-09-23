@@ -17,14 +17,7 @@ import { useHighScore } from '../../hooks/useHighScore';
 
 export const TypingTest = () => {
   // configuration
-  const {
-    textType,
-    textAmount,
-    timeLimitInSeconds,
-    handleTextTypeChange,
-    handleTextAmountChange,
-    handleTimeLimitChange,
-  } = useConfiguration();
+  const { textType, textAmount, timeLimitInSeconds } = useConfiguration();
 
   // fetching
   const { targetText, refetchText } = useTextFetch(textType, textAmount);
@@ -34,9 +27,9 @@ export const TypingTest = () => {
 
   // test state
   const typingTestState = useTypingTest(
-    targetText, 
+    targetText,
     timeLimitInSeconds,
-    checkForHighScore
+    checkForHighScore,
   );
 
   // test calculation
@@ -64,34 +57,14 @@ export const TypingTest = () => {
     typingTestState.resetTest();
   };
 
-  const handleConfigurationChange = {
-    textType: (type: typeof textType) => {
-      handleTextTypeChange(type);
-      typingTestState.resetTest();
-    },
-    textAmount: (amount: number) => {
-      handleTextAmountChange(amount);
-      typingTestState.resetTest();
-    },
-    timeLimitInSeconds: (time: number) => {
-      handleTimeLimitChange(time);
-      typingTestState.resetTest();
-    },
-  };
-
   return (
     <StyledWrapper>
       <StyledHeader>Type'o Speed Test</StyledHeader>
       {highScore && <StyledHeader>Highest score: {highScore} WPM</StyledHeader>}
 
       <ConfigurationPanel
-        textType={textType}
-        textAmount={textAmount}
-        timeLimitInSeconds={timeLimitInSeconds}
-        onTextTypeChange={handleConfigurationChange.textType}
-        onTextAmountChange={handleConfigurationChange.textAmount}
-        onTimeLimitChange={handleConfigurationChange.timeLimitInSeconds}
         handleNewText={handleNewText}
+        onConfigChange={typingTestState.resetTest}
       />
 
       {targetText && (

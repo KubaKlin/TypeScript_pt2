@@ -1,5 +1,6 @@
 import { TextType } from '../../types';
 import type { ChangeEvent } from 'react';
+import { useConfiguration } from '../../hooks/useConfiguration';
 import {
   StyledPanelHeader,
   StyledPanelWrapper,
@@ -10,34 +11,39 @@ import {
 } from './ConfigurationPanel.styles';
 
 interface ConfigurationPanelProps {
-  textType: TextType;
-  textAmount: number;
-  timeLimitInSeconds: number;
-  onTextTypeChange: (type: TextType) => void;
-  onTextAmountChange: (amount: number) => void;
-  onTimeLimitChange: (time: number) => void;
   handleNewText: () => void;
+  onConfigChange?: () => void;
 }
 
 export const ConfigurationPanel = ({
-  textType,
-  textAmount,
-  timeLimitInSeconds,
-  onTextTypeChange,
-  onTextAmountChange,
-  onTimeLimitChange,
   handleNewText,
+  onConfigChange,
 }: ConfigurationPanelProps) => {
-  const handleTextAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onTextAmountChange(Number(event.target.value));
+  const {
+    textType,
+    textAmount,
+    timeLimitInSeconds,
+    handleTextTypeChange,
+    handleTextAmountChange,
+    handleTimeLimitChange,
+  } = useConfiguration();
+  const handleTextAmountChangeEvent = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    handleTextAmountChange(Number(event.target.value));
+    onConfigChange?.();
   };
 
-  const handleTextTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onTextTypeChange(event.target.value as TextType);
+  const handleTextTypeChangeEvent = (event: ChangeEvent<HTMLSelectElement>) => {
+    handleTextTypeChange(event.target.value as TextType);
+    onConfigChange?.();
   };
 
-  const handleTimeLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onTimeLimitChange(Number(event.target.value));
+  const handleTimeLimitChangeEvent = (
+    event: ChangeEvent<HTMLSelectElement>,
+  ) => {
+    handleTimeLimitChange(Number(event.target.value));
+    onConfigChange?.();
   };
 
   return (
@@ -46,7 +52,7 @@ export const ConfigurationPanel = ({
       <StyledOptionsWrapper>
         <div>
           <label>Text Type: </label>
-          <StyledSelect value={textType} onChange={handleTextTypeChange}>
+          <StyledSelect value={textType} onChange={handleTextTypeChangeEvent}>
             <option value="paragraphs">Paragraphs</option>
             <option value="sentences">Sentences</option>
           </StyledSelect>
@@ -57,7 +63,7 @@ export const ConfigurationPanel = ({
           <StyledInput
             type="number"
             value={textAmount}
-            onChange={handleTextAmountChange}
+            onChange={handleTextAmountChangeEvent}
             min="1"
             max={textType === 'paragraphs' ? 10 : 20}
           />
@@ -65,7 +71,10 @@ export const ConfigurationPanel = ({
 
         <div>
           <label>Time Limit: </label>
-          <StyledSelect value={timeLimitInSeconds} onChange={handleTimeLimitChange}>
+          <StyledSelect
+            value={timeLimitInSeconds}
+            onChange={handleTimeLimitChangeEvent}
+          >
             <option value={30}>30 seconds</option>
             <option value={60}>1 minute</option>
             <option value={120}>2 minutes</option>
