@@ -1,4 +1,5 @@
 import { StyledTextText } from './TextDisplay.styles';
+import { getCharacterStyle } from '../../utils/characterStyling';
 
 interface TextDisplayProps {
   targetText: string;
@@ -13,34 +14,19 @@ export const TextDisplay = ({
   currentIndex,
   errors,
 }: TextDisplayProps) => {
-  if (!targetText) return null;
+  if (!targetText) {
+    return null;
+  }
 
   return (
     <StyledTextText>
       {targetText.split('').map((singleCharacter: string, index: number) => {
-        let backgroundColor = '';
-        let color = '';
-
-        if (index < userInput.length) {
-          if (errors.has(index)) {
-            backgroundColor = '#ffebee';
-            color = '#d32f2f';
-          } else {
-            backgroundColor = '#e8f5e8';
-            color = '#2e7d32';
-          }
-        } else if (index === currentIndex) {
-          backgroundColor = '#bbdefb';
-          color = '#000';
-        }
+        const characterStyle = getCharacterStyle(index, userInput.length, currentIndex, errors);
 
         return (
           <span
             key={index}
-            style={{
-              backgroundColor,
-              color,
-            }}
+            style={characterStyle}
           >
             {singleCharacter}
           </span>
