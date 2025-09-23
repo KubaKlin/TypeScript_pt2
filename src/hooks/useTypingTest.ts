@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { calculateErrors, calculateTypingStats } from '../utils/typingCalculations';
+import {
+  calculateErrors,
+  calculateTypingStats,
+} from '../utils/typingCalculations';
 
 export const useTypingTest = (
-  targetText: string, 
+  targetText: string,
   timeLimitInSeconds: number = 0,
-  onTestComplete?: (wordsPerMinute: number) => void
+  onTestComplete?: (wordsPerMinute: number) => void,
 ) => {
   // Test state
   const [isTestStarted, setIsTestStarted] = useState<boolean>(false);
@@ -17,7 +20,8 @@ export const useTypingTest = (
   const [startTime, setStartTime] = useState<number | null>(null);
   const [endTime, setEndTime] = useState<number | null>(null);
   const [errors, setErrors] = useState<Set<number>>(new Set());
-  const [timeRemaining, setTimeRemaining] = useState<number>(timeLimitInSeconds);
+  const [timeRemaining, setTimeRemaining] =
+    useState<number>(timeLimitInSeconds);
 
   // Timer
   const [timerId, setTimerId] = useState<number | null>(null);
@@ -30,10 +34,15 @@ export const useTypingTest = (
       clearInterval(timerId);
       setTimerId(null);
     }
-    
+
     // Calculate final stats and pass WPM to callback
     if (onTestComplete && startTime) {
-      const finalStats = calculateTypingStats(startTime, finalEndTime, userInput, errors);
+      const finalStats = calculateTypingStats(
+        startTime,
+        finalEndTime,
+        userInput,
+        errors,
+      );
       onTestComplete(finalStats.wordsPerMinute);
     }
   };

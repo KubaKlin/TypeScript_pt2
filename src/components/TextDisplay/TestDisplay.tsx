@@ -21,13 +21,15 @@ export const TextDisplay = ({
   return (
     <StyledTextText>
       {targetText.split('').map((singleCharacter: string, index: number) => {
-        const characterStyle = getCharacterStyle(index, userInput.length, currentIndex, errors);
+        const characterStyle = getCharacterStyle(
+          index,
+          userInput.length,
+          currentIndex,
+          errors,
+        );
 
         return (
-          <span
-            key={index}
-            style={characterStyle}
-          >
+          <span key={index} style={characterStyle}>
             {singleCharacter}
           </span>
         );

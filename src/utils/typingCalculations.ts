@@ -16,7 +16,8 @@ export const calculateTypingStats = (
     };
   }
 
-  const timeElapsedInMinutes = ((endTime || Date.now()) - startTime) / 1000 / 60; // in minutes
+  const timeElapsedInMinutes =
+    ((endTime || Date.now()) - startTime) / 1000 / 60; // in minutes
   const totalCharacters = userInput.length;
   const correctCharacters = totalCharacters - errors.size;
   const accuracy =
