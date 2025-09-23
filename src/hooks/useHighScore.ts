@@ -15,14 +15,14 @@ export const useHighScore = ({
   const dispatch = useDispatch();
   const highScore = useSelector((state: RootState) => state.highScore.value);
 
-  const checkForHighScore = (wordsPerMinute: number): void => {
-    if (highScore === null || wordsPerMinute > highScore) {
-      dispatch(setHighScore(wordsPerMinute));
-    }
-  };
-
   // Check for high score when test completes
   useEffect(() => {
+    const checkForHighScore = (wordsPerMinute: number): void => {
+      if (highScore === null || wordsPerMinute > highScore) {
+        dispatch(setHighScore(wordsPerMinute));
+      }
+    };
+
     if (isTestCompleted) {
       checkForHighScore(wordsPerMinute);
     }
@@ -30,6 +30,5 @@ export const useHighScore = ({
 
   return {
     highScore,
-    checkForHighScore,
   };
 };
