@@ -6,7 +6,7 @@ import {
 
 interface TimerProps {
   timeRemaining: number;
-  timeLimit: number;
+  timeLimitInSeconds: number;
   isTestStarted: boolean;
   isTimeUp: boolean;
 }
@@ -19,11 +19,11 @@ const formatTime = (seconds: number): string => {
 
 export const Timer = ({
   timeRemaining,
-  timeLimit,
+  timeLimitInSeconds,
   isTestStarted,
   isTimeUp,
 }: TimerProps) => {
-  if (!isTestStarted || timeLimit === 0 || isTimeUp) {
+  if (!isTestStarted || timeLimitInSeconds === 0 || isTimeUp) {
     return null;
   }
 

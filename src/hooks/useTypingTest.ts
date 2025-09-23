@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { calculateErrors } from '../utils/typingCalculations';
 
-export const useTypingTest = (targetText: string, timeLimit: number = 0) => {
+export const useTypingTest = (targetText: string, timeLimitInSeconds: number = 0) => {
   // Test state
   const [isTestStarted, setIsTestStarted] = useState<boolean>(false);
   const [isTestCompleted, setIsTestCompleted] = useState<boolean>(false);
@@ -13,7 +13,7 @@ export const useTypingTest = (targetText: string, timeLimit: number = 0) => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [endTime, setEndTime] = useState<number | null>(null);
   const [errors, setErrors] = useState<Set<number>>(new Set());
-  const [timeRemaining, setTimeRemaining] = useState<number>(timeLimit);
+  const [timeRemaining, setTimeRemaining] = useState<number>(timeLimitInSeconds);
 
   // Timer
   const [timerId, setTimerId] = useState<number | null>(null);
@@ -36,10 +36,10 @@ export const useTypingTest = (targetText: string, timeLimit: number = 0) => {
     setIsTestCompleted(false);
     setIsTimeUp(false);
     setEndTime(null);
-    setTimeRemaining(timeLimit);
+    setTimeRemaining(timeLimitInSeconds);
 
     // Start timer if time limit is set
-    if (timeLimit > 0) {
+    if (timeLimitInSeconds > 0) {
       const id = setInterval(() => {
         setTimeRemaining((previous) => {
           if (previous <= 1) {
@@ -67,7 +67,7 @@ export const useTypingTest = (targetText: string, timeLimit: number = 0) => {
     setStartTime(null);
     setEndTime(null);
     setErrors(new Set());
-    setTimeRemaining(timeLimit);
+    setTimeRemaining(timeLimitInSeconds);
   };
 
   const handleInputChange = (value: string) => {

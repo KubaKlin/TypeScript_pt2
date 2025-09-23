@@ -12,7 +12,7 @@ import {
 interface ConfigurationPanelProps {
   textType: TextType;
   textAmount: number;
-  timeLimit: number;
+  timeLimitInSeconds: number;
   onTextTypeChange: (type: TextType) => void;
   onTextAmountChange: (amount: number) => void;
   onTimeLimitChange: (time: number) => void;
@@ -22,7 +22,7 @@ interface ConfigurationPanelProps {
 export const ConfigurationPanel = ({
   textType,
   textAmount,
-  timeLimit,
+  timeLimitInSeconds,
   onTextTypeChange,
   onTextAmountChange,
   onTimeLimitChange,
@@ -65,7 +65,7 @@ export const ConfigurationPanel = ({
 
         <div>
           <label>Time Limit: </label>
-          <StyledSelect value={timeLimit} onChange={handleTimeLimitChange}>
+          <StyledSelect value={timeLimitInSeconds} onChange={handleTimeLimitChange}>
             <option value={30}>30 seconds</option>
             <option value={60}>1 minute</option>
             <option value={120}>2 minutes</option>

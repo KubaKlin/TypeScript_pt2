@@ -20,7 +20,7 @@ export const TypingTest = () => {
   const {
     textType,
     textAmount,
-    timeLimit,
+    timeLimitInSeconds,
     handleTextTypeChange,
     handleTextAmountChange,
     handleTimeLimitChange,
@@ -30,7 +30,7 @@ export const TypingTest = () => {
   const { targetText, refetchText } = useTextFetch(textType, textAmount);
 
   // test state
-  const typingTestState = useTypingTest(targetText, timeLimit);
+  const typingTestState = useTypingTest(targetText, timeLimitInSeconds);
 
   // test calculation
   const stats = calculateTypingStats(
@@ -72,7 +72,7 @@ export const TypingTest = () => {
       handleTextAmountChange(amount);
       typingTestState.resetTest();
     },
-    timeLimit: (time: number) => {
+    timeLimitInSeconds: (time: number) => {
       handleTimeLimitChange(time);
       typingTestState.resetTest();
     },
@@ -86,10 +86,10 @@ export const TypingTest = () => {
       <ConfigurationPanel
         textType={textType}
         textAmount={textAmount}
-        timeLimit={timeLimit}
+        timeLimitInSeconds={timeLimitInSeconds}
         onTextTypeChange={handleConfigurationChange.textType}
         onTextAmountChange={handleConfigurationChange.textAmount}
-        onTimeLimitChange={handleConfigurationChange.timeLimit}
+        onTimeLimitChange={handleConfigurationChange.timeLimitInSeconds}
         handleNewText={handleNewText}
       />
 
@@ -104,7 +104,7 @@ export const TypingTest = () => {
 
       <Timer
         timeRemaining={typingTestState.timeRemaining}
-        timeLimit={timeLimit}
+        timeLimitInSeconds={timeLimitInSeconds}
         isTestStarted={typingTestState.isTestStarted}
         isTimeUp={typingTestState.isTimeUp}
       />
