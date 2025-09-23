@@ -6,10 +6,14 @@ import { TextType } from '../types';
 
 export const useTextFetch = (textType: TextType, textAmount: number) => {
   const { data: paragraphText, refetch: refetchParagraphs } =
-    useGetTextWithParamsQuery(textAmount);
+    useGetTextWithParamsQuery(textAmount, {
+      skip: textType !== 'paragraphs',
+    });
 
   const { data: sentenceText, refetch: refetchSentences } =
-    useGetTextWithSentencesQuery(textAmount);
+    useGetTextWithSentencesQuery(textAmount, {
+      skip: textType !== 'sentences',
+    });
 
   let targetText: string;
   if (textType === 'paragraphs') {
