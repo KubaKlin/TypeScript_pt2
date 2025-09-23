@@ -1,4 +1,16 @@
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../store/store';
+import {
+  setTargetText,
+  setTimeLimitInSeconds,
+  startTest as startTestAction,
+  completeTest,
+  markCallbackCalled,
+  resetTest as resetTestAction,
+  updateUserInput,
+  setTimerId,
+  decrementTimeRemaining,
+} from '../store/typingTestSlice';
 import {
   calculateErrors,
   calculateTypingStats,
@@ -9,110 +21,91 @@ export const useTypingTest = (
   timeLimitInSeconds: number = 0,
   onTestComplete?: (wordsPerMinute: number) => void,
 ) => {
-  // Test state
-  const [isTestStarted, setIsTestStarted] = useState<boolean>(false);
-  const [isTestCompleted, setIsTestCompleted] = useState<boolean>(false);
-  const [isTimeUp, setIsTimeUp] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const typingTestState = useSelector((state: RootState) => state.typingTest);
 
-  // Typing state
-  const [userInput, setUserInput] = useState<string>('');
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [startTime, setStartTime] = useState<number | null>(null);
-  const [endTime, setEndTime] = useState<number | null>(null);
-  const [errors, setErrors] = useState<Set<number>>(new Set());
-  const [timeRemaining, setTimeRemaining] =
-    useState<number>(timeLimitInSeconds);
+  if (typingTestState.targetText !== targetText) {
+    dispatch(setTargetText(targetText));
+  }
+  if (typingTestState.timeLimitInSeconds !== timeLimitInSeconds) {
+    dispatch(setTimeLimitInSeconds(timeLimitInSeconds));
+  }
 
-  // Timer
-  const [timerId, setTimerId] = useState<number | null>(null);
-
-  const completeTest = () => {
-    const finalEndTime = Date.now();
-    setIsTestCompleted(true);
-    setEndTime(finalEndTime);
-    if (timerId) {
-      clearInterval(timerId);
-      setTimerId(null);
-    }
+  const handleCompleteTest = () => {
+    dispatch(completeTest());
 
     // Calculate final stats and pass WPM to callback
-    if (onTestComplete && startTime) {
+    if (onTestComplete && typingTestState.startTime) {
+      const finalEndTime = Date.now();
+      const errorsSet = new Set(typingTestState.errors);
       const finalStats = calculateTypingStats(
-        startTime,
+        typingTestState.startTime,
         finalEndTime,
-        userInput,
-        errors,
+        typingTestState.userInput,
+        errorsSet,
       );
       onTestComplete(finalStats.wordsPerMinute);
     }
   };
 
+  // Check if test was just completed due to time up and trigger callback
+  if (
+    typingTestState.isTimeUp &&
+    typingTestState.isTestCompleted &&
+    onTestComplete &&
+    typingTestState.startTime &&
+    typingTestState.endTime &&
+    !typingTestState.hasCalledOnComplete
+  ) {
+    const errorsSet = new Set(typingTestState.errors);
+    const finalStats = calculateTypingStats(
+      typingTestState.startTime,
+      typingTestState.endTime,
+      typingTestState.userInput,
+      errorsSet,
+    );
+    onTestComplete(finalStats.wordsPerMinute);
+    dispatch(markCallbackCalled());
+  }
+
   const startTest = () => {
-    setIsTestStarted(true);
-    setStartTime(Date.now());
-    setUserInput('');
-    setCurrentIndex(0);
-    setErrors(new Set());
-    setIsTestCompleted(false);
-    setIsTimeUp(false);
-    setEndTime(null);
-    setTimeRemaining(timeLimitInSeconds);
+    dispatch(startTestAction());
 
     // Start timer if time limit is set
     if (timeLimitInSeconds > 0) {
       const id = setInterval(() => {
-        setTimeRemaining((previous) => {
-          if (previous <= 1) {
-            setIsTimeUp(true);
-            completeTest();
-            return 0;
-          }
-          return previous - 1;
-        });
+        dispatch(decrementTimeRemaining());
       }, 1000);
-      setTimerId(id);
+      dispatch(setTimerId(id));
     }
   };
 
   const resetTest = () => {
-    if (timerId) {
-      clearInterval(timerId);
-      setTimerId(null);
-    }
-    setIsTestStarted(false);
-    setIsTestCompleted(false);
-    setIsTimeUp(false);
-    setUserInput('');
-    setCurrentIndex(0);
-    setStartTime(null);
-    setEndTime(null);
-    setErrors(new Set());
-    setTimeRemaining(timeLimitInSeconds);
+    dispatch(resetTestAction());
   };
 
   const handleInputChange = (value: string) => {
-    setUserInput(value);
-    setCurrentIndex(value.length);
-
     const newErrors = calculateErrors(value, targetText);
-    setErrors(newErrors);
+    const errorsArray = Array.from(newErrors);
+
+    dispatch(updateUserInput({ value, errors: errorsArray }));
 
     // Check if test is completed
     if (value.length >= targetText.length) {
-      completeTest();
+      handleCompleteTest();
     }
   };
 
   return {
-    isTestStarted,
-    isTestCompleted,
-    isTimeUp,
-    userInput,
-    currentIndex,
-    startTime,
-    endTime,
-    errors,
-    timeRemaining,
+    isTestStarted: typingTestState.isTestStarted,
+    isTestCompleted: typingTestState.isTestCompleted,
+    isTimeUp: typingTestState.isTimeUp,
+    userInput: typingTestState.userInput,
+    currentIndex: typingTestState.currentIndex,
+    startTime: typingTestState.startTime,
+    endTime: typingTestState.endTime,
+    errors: new Set(typingTestState.errors), // Convert back to Set for compatibility
+    timeRemaining: typingTestState.timeRemaining,
 
     startTest,
     resetTest,
