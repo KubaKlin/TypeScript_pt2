@@ -3,6 +3,7 @@ import { api } from './api';
 import highScoreReducer from './highScoreSlice';
 import configurationReducer from './configurationSlice';
 import typingTestReducer from './typingTestSlice';
+import { highScoreListenerMiddleware } from './highScoreMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,9 @@ export const store = configureStore({
     typingTest: typingTestReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(api.middleware);
+    return getDefaultMiddleware()
+      .concat(api.middleware)
+      .prepend(highScoreListenerMiddleware.middleware);
   },
 });
 

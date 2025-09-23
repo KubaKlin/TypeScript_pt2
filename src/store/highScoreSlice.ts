@@ -17,13 +17,6 @@ const loadHighScore = (): number | null => {
   }
 };
 
-const saveHighScore = (score: number): void => {
-  try {
-    localStorage.setItem('highScore', JSON.stringify(score));
-  } catch (error) {
-    console.error('Error saving highscore to localStorage', error);
-  }
-};
 
 const initialState: HighScoreState = {
   value: loadHighScore(),
@@ -37,7 +30,6 @@ export const highScoreSlice = createSlice({
       const newScore = action.payload;
       if (state.value === null || newScore > state.value) {
         state.value = newScore;
-        saveHighScore(newScore);
       }
     },
   },
