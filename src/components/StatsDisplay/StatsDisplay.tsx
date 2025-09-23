@@ -38,7 +38,7 @@ export const StatsDisplay = ({
             <div>Accuracy</div>
           </StyledStatWrapper>
           <StyledStatWrapper>
-            <StyledStatValue>{stats.timeElapsed}s</StyledStatValue>
+            <StyledStatValue>{stats.timeElapsedInMinutes}s</StyledStatValue>
             <div>Time Taken</div>
           </StyledStatWrapper>
         </StyledStats>

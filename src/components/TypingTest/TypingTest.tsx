@@ -43,7 +43,7 @@ export const TypingTest = () => {
   // progress calculation
   const progress = calculateProgress(
     typingTestState.currentIndex,
-    targetText?.length,
+    targetText.length,
   );
 
   // High score management

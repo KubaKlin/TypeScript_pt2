@@ -10,24 +10,24 @@ export const calculateTypingStats = (
     return {
       wordsPerMinute: 0,
       accuracy: 0,
-      timeElapsed: 0,
+      timeElapsedInMinutes: 0,
       totalCharacters: 0,
       correctCharacters: 0,
     };
   }
 
-  const timeElapsed = ((endTime || Date.now()) - startTime) / 1000 / 60; // in minutes
+  const timeElapsedInMinutes = ((endTime || Date.now()) - startTime) / 1000 / 60; // in minutes
   const totalCharacters = userInput.length;
   const correctCharacters = totalCharacters - errors.size;
   const accuracy =
     totalCharacters > 0 ? (correctCharacters / totalCharacters) * 100 : 0;
   const wordsTyped = userInput.trim().split(/\s+/).length;
-  const wordsPerMinute = Math.round(wordsTyped / timeElapsed);
+  const wordsPerMinute = Math.round(wordsTyped / timeElapsedInMinutes);
 
   return {
     wordsPerMinute,
     accuracy: Math.round(accuracy * 100) / 100,
-    timeElapsed: Math.round(timeElapsed * 60 * 100) / 100,
+    timeElapsedInMinutes: Math.round(timeElapsedInMinutes * 60 * 100) / 100,
     totalCharacters,
     correctCharacters,
   };

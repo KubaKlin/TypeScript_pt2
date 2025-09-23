@@ -1,7 +1,7 @@
 export interface TypingStats {
   wordsPerMinute: number;
   accuracy: number;
-  timeElapsed: number;
+  timeElapsedInMinutes: number;
   totalCharacters: number;
   correctCharacters: number;
 }
