@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 
-export const StyledTextWrapper = styled('div')(({theme}) => ({
+export const StyledTextWrapper = styled('div')(({ theme }) => ({
   padding: '20px',
   borderRadius: '10px',
   marginBottom: '20px',
@@ -24,7 +24,7 @@ export const StyledButton = styled('button')(() => ({
   cursor: 'pointer',
 }));
 
-export const StyledTextArea = styled('textarea')(({theme}) => ({
+export const StyledTextArea = styled('textarea')(({ theme }) => ({
   width: '100%',
   height: '120px',
   padding: '15px',
