@@ -29,8 +29,15 @@ export const TypingTest = () => {
   // fetching
   const { targetText, refetchText } = useTextFetch(textType, textAmount);
 
+  // High score management
+  const { highScore, checkForHighScore } = useHighScore();
+
   // test state
-  const typingTestState = useTypingTest(targetText, timeLimitInSeconds);
+  const typingTestState = useTypingTest(
+    targetText, 
+    timeLimitInSeconds,
+    checkForHighScore
+  );
 
   // test calculation
   const stats = calculateTypingStats(
@@ -45,12 +52,6 @@ export const TypingTest = () => {
     typingTestState.currentIndex,
     targetText.length,
   );
-
-  // High score management
-  const { highScore } = useHighScore({
-    isTestCompleted: typingTestState.isTestCompleted,
-    wordsPerMinute: stats.wordsPerMinute,
-  });
 
   const handleInputChangeWrapper = (
     event: ChangeEvent<HTMLTextAreaElement>,
