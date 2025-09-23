@@ -17,7 +17,6 @@ const loadHighScore = (): number | null => {
   }
 };
 
-
 const initialState: HighScoreState = {
   value: loadHighScore(),
 };

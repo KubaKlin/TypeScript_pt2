@@ -17,7 +17,7 @@ highScoreListenerMiddleware.startListening({
   effect: (_, listenerApi) => {
     const state = listenerApi.getState() as any;
     const currentHighScore = state.highScore.value;
-    
+
     if (currentHighScore !== null) {
       saveHighScoreToLocalStorage(currentHighScore);
     }

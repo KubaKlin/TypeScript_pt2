@@ -34,7 +34,6 @@ export const useTypingTest = (
   const handleCompleteTest = () => {
     dispatch(completeTest());
 
-    // Calculate final stats and pass WPM to callback
     if (onTestComplete && typingTestState.startTime) {
       const finalEndTime = Date.now();
       const errorsSet = new Set(typingTestState.errors);
@@ -71,7 +70,6 @@ export const useTypingTest = (
   const startTest = () => {
     dispatch(startTestAction());
 
-    // Start timer if time limit is set
     if (timeLimitInSeconds > 0) {
       const id = setInterval(() => {
         dispatch(decrementTimeRemaining());

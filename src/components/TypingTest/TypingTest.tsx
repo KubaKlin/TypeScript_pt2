@@ -16,23 +16,18 @@ import { StyledWrapper, StyledHeader } from './TypingTest.styles';
 import { useHighScore } from '../../hooks/useHighScore';
 
 export const TypingTest = () => {
-  // configuration
   const { textType, textAmount, timeLimitInSeconds } = useConfiguration();
 
-  // fetching
   const { targetText, refetchText } = useTextFetch(textType, textAmount);
 
-  // High score management
   const { highScore, checkForHighScore } = useHighScore();
 
-  // test state
   const typingTestState = useTypingTest(
     targetText,
     timeLimitInSeconds,
     checkForHighScore,
   );
 
-  // test calculation
   const stats = calculateTypingStats(
     typingTestState.startTime,
     typingTestState.endTime,
@@ -40,7 +35,6 @@ export const TypingTest = () => {
     typingTestState.errors,
   );
 
-  // progress calculation
   const progress = calculateProgress(
     typingTestState.currentIndex,
     targetText.length,
