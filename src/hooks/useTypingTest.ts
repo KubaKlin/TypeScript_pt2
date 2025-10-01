@@ -24,13 +24,6 @@ export const useTypingTest = (
   const dispatch = useDispatch();
   const typingTestState = useSelector((state: RootState) => state.typingTest);
 
-  if (typingTestState.targetText !== targetText) {
-    dispatch(setTargetText(targetText));
-  }
-  if (typingTestState.timeLimitInSeconds !== timeLimitInSeconds) {
-    dispatch(setTimeLimitInSeconds(timeLimitInSeconds));
-  }
-
   const handleCompleteTest = () => {
     dispatch(completeTest());
 
@@ -67,7 +60,18 @@ export const useTypingTest = (
     dispatch(markCallbackCalled());
   }
 
+  const initializeTest = () => {
+    if (typingTestState.targetText !== targetText) {
+      dispatch(setTargetText(targetText));
+    }
+    if (typingTestState.timeLimitInSeconds !== timeLimitInSeconds) {
+      dispatch(setTimeLimitInSeconds(timeLimitInSeconds));
+    }
+  };
+
   const startTest = () => {
+    // Initialize test configuration before starting
+    initializeTest();
     dispatch(startTestAction());
 
     if (timeLimitInSeconds > 0) {
@@ -105,6 +109,7 @@ export const useTypingTest = (
     errors: new Set(typingTestState.errors), // Convert back to Set for compatibility
     timeRemaining: typingTestState.timeRemaining,
 
+    initializeTest,
     startTest,
     resetTest,
     handleInputChange,
