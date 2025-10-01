@@ -1,11 +1,8 @@
 import './App.css';
+import { TypingTest } from './components/TypingTest/TypingTest';
 
-function App() {
-  return (
-    <>
-      <h1>Type'o app</h1>
-    </>
-  );
-}
+const App = () => {
+  return <TypingTest />;
+};
 
 export default App;
