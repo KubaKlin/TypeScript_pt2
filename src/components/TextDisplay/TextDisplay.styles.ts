@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 
-export const StyledTextText = styled('div')(() => ({
+export const StyledText = styled('div')(() => ({
   fontSize: '20px',
   lineHeight: '1.6',
   fontFamily: 'monospace',

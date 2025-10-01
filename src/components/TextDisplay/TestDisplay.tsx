@@ -1,4 +1,4 @@
-import { StyledTextText } from './TextDisplay.styles';
+import { StyledText } from './TextDisplay.styles';
 import { getCharacterStyle } from '../../utils/characterStyling';
 
 interface TextDisplayProps {
@@ -19,7 +19,7 @@ export const TextDisplay = ({
   }
 
   return (
-    <StyledTextText>
+    <StyledText>
       {targetText.split('').map((singleCharacter: string, index: number) => {
         const characterStyle = getCharacterStyle(
           index,
@@ -34,6 +34,6 @@ export const TextDisplay = ({
           </span>
         );
       })}
-    </StyledTextText>
+    </StyledText>
   );
 };
