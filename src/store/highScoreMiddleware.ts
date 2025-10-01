@@ -1,5 +1,6 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { setHighScore } from './highScoreSlice';
+import { RootState } from './store';
 
 const saveHighScoreToLocalStorage = (score: number): void => {
   try {
@@ -15,7 +16,7 @@ export const highScoreListenerMiddleware = createListenerMiddleware();
 highScoreListenerMiddleware.startListening({
   matcher: isAnyOf(setHighScore),
   effect: (_, listenerApi) => {
-    const state = listenerApi.getState() as any;
+    const state = listenerApi.getState() as RootState;
     const currentHighScore = state.highScore.value;
 
     if (currentHighScore !== null) {
